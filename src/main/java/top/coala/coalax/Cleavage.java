@@ -56,8 +56,10 @@ public class Cleavage {
                 ExcelOperationUtil.copyRow(xssfRows.get(i), row);
             }
             b.write(new FileOutputStream(path + s + ".xlsx"));
-
+            b.close();
         }
+
+
     }
 
     public HashMap<String, List<Row>> groupBy(int column) {

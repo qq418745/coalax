@@ -47,18 +47,29 @@ public class ExcelCleavageFrame  extends JFrame {
         cleavagePanel.addStartBtnActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < 100; i++) {
+                    table.setValueAt(""  , i, 0);
+                }
+
                 try {
 
                     String columnText = cleavagePanel.columnText.getText().trim();
                     String fileTxt = cleavagePanel.fileText.getText().trim();
                     String outText = cleavagePanel.outText.getText().trim();
                     String tText = cleavagePanel.tText.getText().trim();
-                    System.out.println(columnText + fileTxt + outText);
+                    try {
+                        Integer.parseInt(columnText);
+                    } catch (NumberFormatException numberFormatException) {
+                        table.setValueAt("切割列序号 应该为数字! 处理失败"  , 7, 0);
+                        numberFormatException.printStackTrace();
+                        return;
+                    }
+                    int column =  Integer.parseInt(columnText) + 1;
 
                     table.setValueAt("开始工作: ", 0, 0);
-                    table.setValueAt("切割列,序号: " + columnText, 1, 0);
+                    table.setValueAt("切割列序号: " + column, 1, 0);
                     table.setValueAt("源表格文件: " + fileTxt , 2, 0);
-                    table.setValueAt("输出文件模板: " + tText, 3, 0);
+                    table.setValueAt("模板表格文件: " + tText, 3, 0);
                     table.setValueAt("输出路径" + outText , 4, 0);
                     table.repaint();
                     table.setValueAt("============================" , 5, 0);
@@ -75,18 +86,10 @@ public class ExcelCleavageFrame  extends JFrame {
                         return;
                     }
 
-                    try {
-                        Integer.parseInt(columnText);
-                    } catch (NumberFormatException numberFormatException) {
-                        table.setValueAt("切割列, 序号应该为数字! 处理失败"  , 7, 0);
-                        numberFormatException.printStackTrace();
-                        return;
-                    }
-
-                    String columnValue = cleavage.getWorkbook().getSheetAt(0).getRow(0).getCell(Integer.parseInt(columnText)).getStringCellValue();
+                    String columnValue = cleavage.getWorkbook().getSheetAt(0).getRow(0).getCell(column).getStringCellValue();
                     table.setValueAt("切割列名为: " + columnValue , 7, 0);
                     table.setValueAt("开始分组" + columnValue , 8, 0);
-                    HashMap<String, List<Row>> map = cleavage.groupBy(Integer.parseInt(columnText));
+                    HashMap<String, List<Row>> map = cleavage.groupBy(column);
                     table.setValueAt("分组成功" + columnValue , 9, 0);
                     table.setValueAt("============================" , 10, 0);
                     try {
@@ -144,17 +147,17 @@ public class ExcelCleavageFrame  extends JFrame {
         public CleavagePanel() {
 
 
-            column = new JLabel("需要切割的列");
-            columnText = new JTextField("0");
+            column = new JLabel("切割列序号");
+            columnText = new JTextField("");
 
-            file = new JLabel("原始文件");
-            fileText = new JTextField("D:/coalax/1.xlsx");
+            file = new JLabel("源表格文件");
+            fileText = new JTextField("D:/coalax/1.xlsx",JLabel.CENTER);
 
-            tLabel =  new JLabel("模板文件");
-            tText = new JTextField("D:/coalax/t.xlsx");
+            tLabel =  new JLabel("模板表格文件");
+            tText = new JTextField("D:/coalax/t.xlsx",JLabel.CENTER);
 
             outLabel = new JLabel("输出文件路径");
-            outText = new JTextField("D:/coalax/out/");
+            outText = new JTextField("D:/coalax/out/",JLabel.CENTER);
 
             startBtn = new JButton("开始切割");
 
