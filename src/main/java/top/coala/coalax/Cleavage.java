@@ -17,13 +17,17 @@ import java.util.List;
  */
 public class Cleavage {
 
-    Cleavage(String fileName) {
+    public Cleavage(String fileName) {
         this.workbook = Cleavage.createWorkbook(fileName);
     }
 
     private final Workbook workbook;
 
-    static Workbook createWorkbook(String fileName) {
+    public Workbook getWorkbook() {
+        return workbook;
+    }
+
+    public static Workbook createWorkbook(String fileName) {
         FileInputStream fileInputStream = null;
         try {
             fileInputStream = new FileInputStream(fileName);
