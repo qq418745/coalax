@@ -64,7 +64,7 @@ public class ExcelCleavageFrame  extends JFrame {
                         numberFormatException.printStackTrace();
                         return;
                     }
-                    int column =  Integer.parseInt(columnText) + 1;
+                    int column =  Integer.parseInt(columnText) ;
 
                     table.setValueAt("开始工作: ", 0, 0);
                     table.setValueAt("切割列序号: " + column, 1, 0);
@@ -86,10 +86,10 @@ public class ExcelCleavageFrame  extends JFrame {
                         return;
                     }
 
-                    String columnValue = cleavage.getWorkbook().getSheetAt(0).getRow(0).getCell(column).getStringCellValue();
+                    String columnValue = cleavage.getWorkbook().getSheetAt(0).getRow(0).getCell(column + 1).getStringCellValue();
                     table.setValueAt("切割列名为: " + columnValue , 7, 0);
                     table.setValueAt("开始分组" + columnValue , 8, 0);
-                    HashMap<String, List<Row>> map = cleavage.groupBy(column);
+                    HashMap<String, List<Row>> map = cleavage.groupBy(column + 1 );
                     table.setValueAt("分组成功" + columnValue , 9, 0);
                     table.setValueAt("============================" , 10, 0);
                     try {
